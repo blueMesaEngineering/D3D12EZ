@@ -49,5 +49,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="README.md" />
+    <None Include="LICENCE" />
   </ItemGroup>
 </Project>

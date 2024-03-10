@@ -153,6 +153,7 @@
     <ClInclude Include="WinInclude.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LICENCE" />
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
