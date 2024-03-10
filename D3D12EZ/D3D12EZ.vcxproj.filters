@@ -50,5 +50,6 @@
     <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="LICENCE" />
+    <None Include="Bug-Report.md" />
   </ItemGroup>
 </Project>
