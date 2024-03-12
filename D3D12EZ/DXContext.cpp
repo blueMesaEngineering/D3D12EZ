@@ -2,6 +2,11 @@
 
 bool DXContext::Init()
 {
+	if (FAILED(CreateDXGIFactory2(0, IID_PPV_ARGS(&m_dxgiFactory))))
+	{
+		return false;
+	}
+
 	if (FAILED(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device))))
 	{
 		return false;
@@ -46,11 +51,14 @@ void DXContext::Shutdown()
 	m_cmdList.Release();
 	m_cmdAllocator.Release();
 	if (m_fenceEvent)
-		{
-			CloseHandle(m_fenceEvent);
-		}
+	{
+		CloseHandle(m_fenceEvent);
+	}
+	m_fence.Release();
 	m_cmdQueue.Release();
-		m_device.Release();
+	m_device.Release();
+
+	m_dxgiFactory.Release();
 }
 
 void DXContext::SignalAndWait()
@@ -61,7 +69,7 @@ void DXContext::SignalAndWait()
 		if (WaitForSingleObject(m_fenceEvent, 20000) != WAIT_OBJECT_0)
 		{
 			exit(-1);	// This was std::exit(-1); but such line generated an error. So I removed std:: and used exit(-1)
-						//	with no problems.  NDG 20240309
+			//	with no problems.  NDG 20240309
 		}
 	}
 	else
