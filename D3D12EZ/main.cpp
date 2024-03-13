@@ -15,16 +15,28 @@ int main()
 	{
 		while (!DXWindow::Get().ShouldClose())
 		{
+			// Process pending window message
 			DXWindow::Get().Update();
+
+			// Handle resizing
+			if (DXWindow::Get().ShouldResize())
+			{
+				DXContext::Get().Flush(DXWindow::GetFrameCount());
+				DXWindow::Get().Resize();
+			}
+
+			// Begin drawing
 			auto* cmdList = DXContext::Get().InitCommandList();
 
-			// a lot of setup
-			// a draw
+			// TODO: Draw
 
+			// Finish drawing and present
 			DXContext::Get().ExecuteCommandList();
-
-			// Show me the stuff
+			DXWindow::Get().Preset();
 		}
+
+		// Flushing
+		DXContext::Get().Flush(DXWindow::GetFrameCount());
 
 		DXWindow::Get().Shutdown();
 		DXContext::Get().Shutdown();
