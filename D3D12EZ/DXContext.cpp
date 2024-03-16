@@ -1,14 +1,29 @@
 #include "DXContext.h"
+#include <iostream>
+#include "comdef.h"
+#include "string.h"
+#include "cstring"
+#include <system_error>
 
 bool DXContext::Init()
 {
-	if (FAILED(CreateDXGIFactory2(0, IID_PPV_ARGS(&m_dxgiFactory))))
+	if (FAILED(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&m_dxgiFactory))))
 	{
 		return false;
 	}
 
+	HRESULT hr = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device));
+	//_com_error err(hr);
+
+	//LPCTSTR errMessage = err.ErrorMessage();
+	std::string errorMessage = std::system_category().message(hr);
+
 	if (FAILED(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device))))
 	{
+		std::cout << "D3D12CreateDevice failed.";
+		std::cout << std::endl;
+		std::cout << "Error message from HRESULT: " << errorMessage;
+		std::cout << std::endl;
 		return false;
 	}
 
@@ -38,7 +53,9 @@ bool DXContext::Init()
 		return false;
 	}
 
-	if (FAILED(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT, D3D12_COMMAND_LIST_FLAG_NONE, IID_PPV_ARGS(&m_cmdList))))
+	//if (FAILED(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT, D3D12_COMMAND_LIST_FLAG_NONE, IID_PPV_ARGS(&m_cmdList))))
+	
+	if (FAILED(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_cmdAllocator, nullptr, IID_PPV_ARGS(&m_cmdList))))
 	{
 		return false;
 	}
