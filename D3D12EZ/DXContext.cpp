@@ -54,9 +54,17 @@ bool DXContext::Init()
 	}
 
 	//if (FAILED(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT, D3D12_COMMAND_LIST_FLAG_NONE, IID_PPV_ARGS(&m_cmdList))))
-	
-	if (FAILED(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_cmdAllocator, nullptr, IID_PPV_ARGS(&m_cmdList))))
+	HRESULT hr2 = m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_cmdAllocator, nullptr, IID_PPV_ARGS(&m_cmdList));
+	std::string errorMessage2 = std::system_category().message(hr2);
+	_com_error err(hr2);
+	LPCTSTR errMessage = err.ErrorMessage();
+	if (FAILED(hr2))
 	{
+		std::cout << "CreateCommandList failed.";
+		std::cout << std::endl;
+		std::cout << "Error message from HRESULT: ";
+		std::wcout << errMessage;
+		std::cout << std::endl;
 		return false;
 	}
 

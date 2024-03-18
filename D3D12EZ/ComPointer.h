@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <iostream>
 
 
 /// <summary>
@@ -72,6 +73,8 @@ public:
 	}
 	CT* Get()
 	{
+		std::cout << "CT* Get()...";
+		std::cout << std::endl;
 		return m_pointer;
 	}
 
@@ -98,10 +101,14 @@ public:
 
 	CT* operator->()
 	{
+		std::cout << "Creating CT* operator->()...";
+		std::cout << std::endl;
 		return m_pointer;
 	}
 	CT** operator&()
 	{
+		std::cout << "Creating CT** operator&()...";
+		std::cout << std::endl;
 		return &m_pointer;
 	}
 
@@ -111,6 +118,8 @@ public:
 	}
 	operator CT* ()
 	{
+		std::cout << "Creating operator CT* ()...";
+		std::cout << std::endl;
 		return m_pointer;
 	}
 
